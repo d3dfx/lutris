@@ -125,12 +125,12 @@ class steam(Runner):
             return appmanifests[0]
 
     def get_executable(self) -> str:
-        if linux.LINUX_SYSTEM.is_flatpak():
-            # Fallback to xgd-open for Steam URIs in Flatpak
-            return system.find_required_executable("xdg-open")
         runner_executable = self.runner_config.get("runner_executable")
         if runner_executable and os.path.isfile(runner_executable):
             return runner_executable
+        else if linux.LINUX_SYSTEM.is_flatpak():
+            # Fallback to xgd-open for Steam URIs in Flatpak
+            return system.find_required_executable("xdg-open")
         return system.find_required_executable(self.runner_executable)
 
     @property
